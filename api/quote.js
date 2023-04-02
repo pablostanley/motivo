@@ -20,10 +20,8 @@ module.exports = async (req, res) => {
       ],
     });
 
-    const quoteMessage = completion.data.choices.find(
-      (choice) => choice.message.role === 'assistant'
-    );
-    const quote = quoteMessage.content.trim();
+    const choice = completion.data.choices.find((choice) => choice.message.role === 'assistant');
+    const quote = choice.message.content.trim();
     const author = 'Unknown'; // Replace with the actual author if needed
 
     // Log the server response
