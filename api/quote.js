@@ -10,6 +10,7 @@ module.exports = async (req, res) => {
     const prompt =
       'Generate an ironic motivational quote misquoting famous quotes or mixing two famous quotes:';
     const completion = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
       messages: [
         {
           role: 'system',
