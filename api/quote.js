@@ -1,22 +1,29 @@
-const { Chat } = require('@openai/assistant');
+const { Configuration, OpenAIApi } = require('openai');
 
 module.exports = async (req, res) => {
   // Replace with your OpenAI API key
   const apiKey = process.env.OPENAI_API_KEY;
 
-  const chat = new Chat({ apiKey });
-  const prompt = 'Generate an ironic motivational quote misquoting famous quotes or mixing two famous quotes:';
-  const chatResponse = await chat.sendMessages([
-    { role: 'system', content: 'You are a helpful assistant that generates ironic motivational quotes.' },
-    { role: 'user', content: prompt },
-  ]);
+  const configuration = new Configuration({ apiKey });
+  const openai = new OpenAIApi(configuration);
+  const prompt =
+    'Generate an ironic motivational quote misquoting famous quotes or mixing two famous quotes:';
+  const completion = await openai.createChatCompletion({
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a helpful assistant that generates ironic motivational quotes.',
+      },
+      { role: 'user', content: prompt },
+    ],
+  });
 
-  const quoteMessage = chatResponse.messages.find(msg => msg.role === 'assistant');
+  const quoteMessage = completion.data.choices.find((choice) => choice.msg.role === 'assistant');
   const quote = quoteMessage.content.trim();
   const author = 'Unknown'; // Replace with the actual author if needed
 
   // Log the server response
-  console.log("Server response:", { quote, author });
+  console.log('Server response:', { quote, author });
 
   // Set CORS headers and send the response with the quote and author
   res.setHeader('Access-Control-Allow-Origin', '*');
