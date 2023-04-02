@@ -20,7 +20,9 @@ module.exports = async (req, res) => {
       ],
     });
 
-    const quoteMessage = completion.data.choices.find((choice) => choice.msg.role === 'assistant');
+    const quoteMessage = completion.data.choices.find(
+      (choice) => choice.message.role === 'assistant'
+    );
     const quote = quoteMessage.content.trim();
     const author = 'Unknown'; // Replace with the actual author if needed
 
